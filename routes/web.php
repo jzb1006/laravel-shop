@@ -15,3 +15,14 @@ Route::get('/','PagesController@root')->name('root');
 
 Auth::routes();
 
+Route::group(['middleware'=>'auth'],function (){
+    Route::get('/email_verified_notice','PagesController@emailVerifiedNotice')
+          ->name('email_verified_notice');
+
+    //开始
+    Route::group(['middleware'=>'email_verified'],function (){
+        Route::get('/test',function (){
+            return "sdf";
+        });
+    });
+});
