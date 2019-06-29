@@ -11,6 +11,23 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/','PagesController@root')->name('root');
+
+Auth::routes();
+
+Route::group(['middleware'=>'auth'],function (){
+
+    Route::get('/email_verified_notice','PagesController@emailVerifiedNotice')
+          ->name('email_verified_notice');
+
+    Route::get('/email_verification/send', 'EmailVerificationController@send')->name('email_verification.send');
+    //开始
+    Route::group(['middleware'=>'email_verified'],function (){
+        Route::get('user_addresses', 'UserAddressesController@index')->name('user_addresses.index');
+
+    });
+
+
+
+    Route::get('/email_verification/verify', 'EmailVerificationController@verify')->name('email_verification.verify');
 });
