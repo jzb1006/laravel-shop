@@ -44,7 +44,7 @@ if (token) {
  */
 
 // import Echo from 'laravel-echo'
-
+require('sweetalert');
 // window.Pusher = require('pusher-js');
 
 // window.Echo = new Echo({
