@@ -27,6 +27,9 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+//引入自定义组件
+require('./components/SelectDistrict');
+require('./components/UserAddressesCreateAndEdit');
 const app = new Vue({
     el: '#app',
 });

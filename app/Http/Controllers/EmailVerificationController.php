@@ -20,7 +20,7 @@ class EmailVerificationController extends Controller
             throw new InvalidRequestException('验证链接不正确');
         }
 
-        if(!$token !=Cache::get('email_verification_'.$email)){
+        if($token !=Cache::get('email_verification_'.$email)){
             throw new InvalidRequestException('验证链接不正确或已过期');
         }
 
