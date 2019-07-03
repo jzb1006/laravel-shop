@@ -11,8 +11,9 @@
 |
 */
 
-Route::get('/','PagesController@root')->name('root');
-
+//Route::get('/','PagesController@root')->name('root');
+Route::redirect('/', '/products')->name('root');
+Route::get('products', 'ProductsController@index')->name('products.index');
 Auth::routes();
 
 Route::group(['middleware'=>'auth'],function (){
@@ -24,7 +25,11 @@ Route::group(['middleware'=>'auth'],function (){
     //开始
     Route::group(['middleware'=>'email_verified'],function (){
         Route::get('user_addresses', 'UserAddressesController@index')->name('user_addresses.index');
-
+        Route::get('user_addresses/create','UserAddressesController@create')->name('user_addresses.create');
+        Route::get('user_addresses/{user_address}', 'UserAddressesController@edit')->name('user_addresses.edit');
+        Route::put('user_addresses/{user_address}', 'UserAddressesController@update')->name('user_addresses.update');
+        Route::delete('user_addresses/{user_address}', 'UserAddressesController@destroy')->name('user_addresses.destroy');
+        Route::post('user_addresses', 'UserAddressesController@store')->name('user_addresses.store');
     });
 
 
