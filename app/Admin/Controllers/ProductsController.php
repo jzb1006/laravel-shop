@@ -40,7 +40,7 @@ class ProductsController extends Controller
         return Admin::grid(Product::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
             $grid->title('商品名称');
-            $grid->on_seal('已上架')->display(function ($value) {
+            $grid->on_sale('已上架')->display(function ($value) {
                 return $value ? '是' : '否';
             });
             $grid->price('价格');
@@ -84,7 +84,7 @@ class ProductsController extends Controller
             $form->editor('description', '商品描述')->rules('required');
 
             // 创建一组单选框
-            $form->radio('on_seal', '上架')->options(['1' => '是', '0'=> '否'])->default('0');
+            $form->radio('on_sale', '上架')->options(['1' => '是', '0'=> '否'])->default('0');
 
             // 直接添加一对多的关联模型
             $form->hasMany('skus', 'SKU 列表', function (Form\NestedForm $form) {
