@@ -34,9 +34,7 @@ class CartController extends Controller
          return view('cart.index',['cartItems'=>$cartItems]);
     }
 
-    public function remove(ProductSku $productSku,Request $request){
-        dd($request);
-        dd($request->user()->cartItems()->where('product_sku_id',$productSku->id)->get());
+    public function remove(Request $request,ProductSku $productSku){
         $request->user()->cartItems()->where('product_sku_id',$productSku->id)->delete();
         return [];
     }
