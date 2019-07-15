@@ -171,6 +171,11 @@
                             swal('系统错误', '', 'error');
                         }
                     });
+
+                swal('订单提交成功', '', 'success')
+                    .then(() => {
+                        location.href = '/orders/' + response.data.id;
+                    });
             });
 
 
