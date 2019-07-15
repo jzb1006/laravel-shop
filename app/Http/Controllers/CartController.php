@@ -11,6 +11,17 @@ class CartController extends Controller
 {
     //
 
+    public function index(Request $request){
+           $cartItems = $request->user()->cartItems()->with([
+               'productSku.product'
+           ])->get();
+
+           $addreddes = $request->user()->addresses()->orderBy('last_used_at','desc')->get();
+
+           return view('cart.index',['cartItems'=>$cartItems,'addresses'=>$addreddes]);
+
+    }
+
     public function add(AddCartRequest $request){
         $user = $request->user();
         $skuId = $request->input('sku_id');
@@ -29,10 +40,6 @@ class CartController extends Controller
         return [];
     }
 
-    public function index(Request $request){
-         $cartItems = $request->user()->cartItems()->with(['productSku.product'])->get();
-         return view('cart.index',['cartItems'=>$cartItems]);
-    }
 
     public function remove(Request $request,ProductSku $productSku){
         $request->user()->cartItems()->where('product_sku_id',$productSku->id)->delete();

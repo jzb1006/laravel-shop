@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Exceptions\InternalException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 class Product extends Model
@@ -29,4 +30,7 @@ class Product extends Model
 
         return config('filesystems.disks.admin.url').'/'.$this->attributes['image'];
     }
+
+
+
 }
