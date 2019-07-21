@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Events\OrderPaid;
+use App\Events\OrderReviewd;
 use App\Listeners\RegisterdListener;
 use App\Listeners\SendOrderPaidMail;
+use App\Listeners\UpdateProductRating;
 use App\Listeners\UpdateProductSoldCount;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
@@ -25,6 +27,9 @@ class EventServiceProvider extends ServiceProvider
         OrderPaid::class=>[
             UpdateProductSoldCount::class,
             SendOrderPaidMail::class
+        ],
+        OrderReviewd::class=>[
+            UpdateProductRating::class
         ]
     ];
 

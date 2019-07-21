@@ -40,14 +40,14 @@ class OrderService
             foreach ($items as $data){
                 $sku = ProductSku::find($data['sku_id']);
 
-                $items = $order->items()->make([
+                $item = $order->items()->make([
                     'amount'=>$data['amount'],
                     'price'=>$sku->price,
                 ]);
 
-                $items->product()->associate($sku->product_id);
-                $items->productSku()->associate($sku);
-                $items->save();
+                $item->product()->associate($sku->product_id);
+                $item->productSku()->associate($sku);
+                $item->save();
                 $totalAmount+=$sku->price*$data['amount'];
                 if($sku->decreaseStock($data['amount'])<=0){
                     throw new InvalidRequestException('商品库存不足');
@@ -59,6 +59,7 @@ class OrderService
             ]);
 
             $skuIds = collect($items)->pluck('sku_id')->all();
+
             app(CartService::class)->remove($skuIds);
 
             return $order;
