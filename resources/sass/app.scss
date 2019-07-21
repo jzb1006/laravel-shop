@@ -127,6 +127,10 @@ body {
     }
 }
 .products-show-page {
+    .payment-buttons, .receive-button {
+        margin-top: 10px;
+        padding-right: 10px;
+    }
     .cover {
         width: 100%;
         border: solid 1px #eee;
