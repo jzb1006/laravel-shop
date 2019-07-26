@@ -2,13 +2,13 @@
 
 namespace App\Admin\Controllers;
 
-use App\Http\Requests\Request;
 use App\Models\Category;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Http\Request;
 
 class CategoriesController extends AdminController
 {
@@ -114,7 +114,7 @@ class CategoriesController extends AdminController
     public function apiIndex(Request $request){
         $search = $request->input('q');
         $result = Category::query()
-            ->where('is_directory')
+            ->where('is_directory',boolval($request->input('is_directory',true)))
             ->where('name','like','%'.$search.'%')
             ->paginate();
 
