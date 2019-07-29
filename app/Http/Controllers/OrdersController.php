@@ -20,6 +20,7 @@ use App\Services\OrderService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\CssSelector\Exception\InternalErrorException;
 
 class OrdersController extends Controller
 {
@@ -118,6 +119,10 @@ class OrdersController extends Controller
 
         if($order->refund_status !== Order::REFUND_STATUS_PENDING){
             throw new InvalidRequestException('该订单已经申请退款，请勿重复申请');
+        }
+
+        if($order->type===Order::TYPE_CROWDFUNDING){
+            throw new InternalErrorException('众筹订单不支持对退款');
         }
         // 将用户输入的退款理由放到订单的 extra 字段中
         $extra = $order->extra ?:[];
