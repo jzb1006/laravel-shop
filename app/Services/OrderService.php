@@ -11,6 +11,7 @@ use App\Models\ProductSku;
 use App\Models\User;
 use App\Models\UserAddress;
 use Carbon\Carbon;
+use Symfony\Component\CssSelector\Exception\InternalErrorException;
 
 class OrderService
 {
@@ -86,6 +87,55 @@ class OrderService
         });
 
         dispatch(new CloseOrder($order,config('app.order_ttl')));
+        return $order;
+    }
+
+    public function crowdfunding(User $user,UserAddress $address,ProductSku $sku,$amount){
+        $order = \DB::transaction(function ()use($amount,$sku,$user,$address){
+            //更新地址使用时间
+            $address->update([
+                'last_used_at'=>Carbon::now()
+            ]);
+
+            $order = new Order([
+                'address'=>[
+                    'address'=>$address->full_address,
+                    'zip'=>$address->zip,
+                    'contact_name'=>$address->contact_name,
+                    'contact_phone'=>$address->contact_phone,
+                ],
+                'remark'=>'',
+                'total_amount' =>$sku->price*$amount
+            ]);
+
+            //订单关联到当前用户
+            $order->user()->associate($user);
+            $order->save();
+
+            //创建一个新的订单项并与SKU关联
+            $item = $order->items()->make([
+                'amount'=>$amount,
+                'price'=>$sku->price
+            ]);
+
+            $item->product()->associate($sku->product_id);
+            $item->productSku()->associate($sku);
+            $item->save();
+
+            //较少SKU的库存
+            if($sku->decreaseStock($amount)<=0){
+                throw new InternalErrorException('该商品库存不足');
+            }
+
+            return $order;
+
+
+        });
+
+        // 众筹结束时间减去当前时间得到剩余秒数
+        $crowdfundingTtl = $sku->product->crowdfunding->end_at->getTimestamp()-time();
+        // 剩余秒数与默认订单关闭时间取较小值作为订单关闭时间
+        dispatch(new CloseOrder($order,min(config('app.order_ttl'),$crowdfundingTtl)));
         return $order;
     }
 
