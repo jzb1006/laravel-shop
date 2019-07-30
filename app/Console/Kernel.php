@@ -26,6 +26,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        //每分钟执行一次这个命令
+        $schedule->command('cron:finish-crowdfunding')->everyMinute();
     }
 
     /**
