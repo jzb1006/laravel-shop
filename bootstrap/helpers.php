@@ -14,3 +14,8 @@ function ngrok_url($routeName, $parameters = [])
 
     return route($routeName, $parameters);
 }
+
+//默认精度伟小数点后两位
+function big_number($number,$scale=2){
+    return new \Moontoast\Math\BigNumber($number,$scale);
+}

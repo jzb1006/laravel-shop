@@ -33,7 +33,7 @@ class UpdateCrowdfundingProductProgress
         if($order->type !== Order::TYPE_CROWDFUNDING){
             return;
         }
-        $crowdfunding = $order->items[0]->produt->crowdfunding;
+        $crowdfunding = $order->items[0]->product->crowdfunding;
         $data = Order::query()
             ->where('type',Order::TYPE_CROWDFUNDING)
             ->whereNotNull('paid_at')
@@ -43,7 +43,6 @@ class UpdateCrowdfundingProductProgress
                 \DB::raw('sum(total_amount) as total_amount'),
                 \DB::raw('count(distinct(user_id)) as user_count')
             ]);
-
         $crowdfunding->update([
             'total_amount'=>$data->total_amount,
             'user_count'=>$data->user_count
