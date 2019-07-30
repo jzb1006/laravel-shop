@@ -14,4 +14,14 @@ class InstallmentsController extends Controller
             ->paginate(10);
         return view('installments.index',['installments'=>$installments]);
     }
+
+    public function show(Installment $installment){
+        // 取出当前分期付款的所有的还款计划，并按还款顺序排序
+        $items = $installment->items()->orderBy('sequence')->get();
+        return view('installments.show',[
+            'installment'=>$installment,
+            'items'=>$items,
+            'nextItem'=>$items->where('paid_at',null)->first(),
+        ]);
+    }
 }
