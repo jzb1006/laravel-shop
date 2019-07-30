@@ -199,7 +199,7 @@ class OrdersController extends Controller
 
                 break;
             case "alipay":
-                // 用我们刚刚写的方法来生成一个退款订单号
+
                 $refundNo =  Order::getAvailableRefundNo();
                 $ret = app('alipay')->refund([
                     'out_trade_no'=>$order->no,// 之前的订单流水号

@@ -25,6 +25,7 @@ class CloseOrder implements ShouldQueue
         //
         $this->order = $order;
 
+        \Log::info($delay);
         // 设置延迟的时间，delay() 方法的参数代表多少秒之后执行
         $this->delay($delay);
     }

@@ -231,4 +231,6 @@ return [
     //订单过期
     'order_ttl' => 1800,
 
+    'ngrok_url' => env('NGROK_URL'),
+
 ];

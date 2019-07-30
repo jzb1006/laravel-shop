@@ -137,9 +137,10 @@ class OrderService
         });
 
         // 众筹结束时间减去当前时间得到剩余秒数
-        $crowdfundingTtl = $sku->product->crowdfunding->end_at->getTimestamp()-time();
+        $crowdfundingTtl = $sku->product->crowdfunding->end_at->getTimestamp() - time();
         // 剩余秒数与默认订单关闭时间取较小值作为订单关闭时间
-        dispatch(new CloseOrder($order,min(config('app.order_ttl'),$crowdfundingTtl)));
+        dispatch(new CloseOrder($order, min(config('app.order_ttl'), $crowdfundingTtl)));
+
         return $order;
     }
 
