@@ -22,7 +22,7 @@ class CreateInstallmentItemsTable extends Migration
             $table->decimal('fine')->nullable()->comment('当前逾期费');
             $table->dateTime('due_date')->comment('还款到期时间');
             $table->dateTime('paid_at')->nullable()->comment('还款日期');
-            $table->string('payment_methods')->nullable();
+            $table->string('payment_method')->nullable();
             $table->string('payment_no')->nullable();
             $table->string('refund_status')->default(\App\Models\InstallmentItem::REFUND_STATUS_PENDING);
             $table->timestamps();
