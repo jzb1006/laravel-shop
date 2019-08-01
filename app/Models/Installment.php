@@ -58,4 +58,21 @@ class Installment extends Model
         \Log::waring(sprintf('find installment no failed'));
         return false;
     }
+
+    public function refreshRefundStatus(){
+        $allSuccess = true;
+        foreach ($this->items as $item){
+            // 如果该还款计划已经还款，但退款状态不是成功
+            if($item->paid_at && $item->refund_status !== InstallmentItem::REFUND_STATUS_SUCCESS){
+                $allSuccess = false;
+                break;
+            }
+        }
+
+        if ($allSuccess){
+            $this->order->update([
+                'refund_status'=>Order::REFUND_STATUS_SUCCESS
+            ]);
+        }
+    }
 }
