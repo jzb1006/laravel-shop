@@ -47,7 +47,6 @@ class RefundInstallmentOrder implements ShouldQueue
         if(!$installment = Installment::query()->where('order_id',$this->order->id)->first()){
             return ;
         }
-        \Log::info('进入循环前');
         //便利对应分期付款的还款计划
         foreach ($installment->items as $item){
             //如果是退款成功和正在退款的就跳过
@@ -75,7 +74,6 @@ class RefundInstallmentOrder implements ShouldQueue
 
     protected function refundInstallmentItem(InstallmentItem $item){
         $refundNo = $this->order->refund_no.'_'.$item->sequence;
-        \Log::info($refundNo);
         switch ($item->payment_method){
             case 'alipay':
                 $ret = app('alipay')->refund([
