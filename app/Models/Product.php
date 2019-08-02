@@ -76,7 +76,7 @@ class Product extends Model
         // 如果商品有类目，则 category 字段为类目名数组，否则为空字符串
         $arr['category'] = $this->category?explode('-',$this->category->full_name):'';
         // 类目的 path 字段
-        $arr['categoty_path'] = $this->category?$this->category->path:'';
+        $arr['category_path'] = $this->category?$this->category->path:'';
         // strip_tags 函数可以将 html 标签去除
         $arr['description'] = strip_tags($this->description);
         //取出SKU的字段
